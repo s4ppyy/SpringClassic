@@ -1,0 +1,63 @@
+package com.peterservice;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import oracle.jdbc.pool.OracleDataSource;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+/**
+ * Created by victor.sobennikov on 30.11.2015.
+ */
+public class ClassicNamedParameterJDBCTemplate {
+    public static void main(String[] args) {
+        // SimpleJdbcTemplate - deprecated
+        OracleDataSource dtSource = null;
+        try {
+            dtSource = new OracleDataSource();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        dtSource.setURL("jdbc:oracle:thin:@SRV2-DRCS-TRC05.net.billing.ru:1521:orcl11s");
+        dtSource.setUser("HR13");
+        dtSource.setPassword("hr13");
+
+        String sqlString = "select 1 f from dual where 'one' = :va and 'two' = :vb";
+        Map<String, Object> argMap = new HashMap<String, Object>();
+        argMap.put("va", "one");
+        argMap.put("vb", "tWo");
+        NamedParameterJdbcTemplate nJTemp = new NamedParameterJdbcTemplate(dtSource);
+        Integer intOne=null;
+        try {
+            intOne = nJTemp.queryForInt(sqlString, argMap);
+        }
+        catch (EmptyResultDataAccessException e) {
+            intOne=-1;
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println(intOne);
+
+        //ListForEmpty
+        argMap.put("vb", "two");
+        sqlString = "select 1 f1,'test' f2, sysdate f3 from dual where 'one' = :va and 'two' = :vb";
+        List<Map<String, Object>> rows = nJTemp.queryForList(sqlString, argMap);
+        System.out.println(rows.size());
+        for (Map<String, Object> mapL:rows) {
+            Timestamp tmWork = (Timestamp)(mapL.get("f3"));
+            Date dtWork = new Date (tmWork.getTime());
+            System.out.println(tmWork);
+            System.out.println(dtWork);
+        }
+
+
+
+        //http://www.dineshonjava.com/2012/12/using-namedparameterjdbctemplate-in.html#.VlxHfb-IKNg
+        //http://www.mkyong.com/spring/spring-jdbctemplate-querying-examples/
+    }
+}

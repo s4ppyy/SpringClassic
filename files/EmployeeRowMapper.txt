@@ -1,0 +1,65 @@
+package com.peterservice;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import oracle.jdbc.pool.OracleDataSource;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+/**
+ * Created by victor.sobennikov on 30.11.2015.
+ */
+public class ClassicRowMapperJDBCTemplate {
+    public static void main(String[] args) {
+        OracleDataSource dtSource = null;
+        try {
+            dtSource = new OracleDataSource();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        dtSource.setURL("jdbc:oracle:thin:@SRV2-DRCS-TRC05.net.billing.ru:1521:orcl11s");
+        dtSource.setUser("HR13");
+        dtSource.setPassword("hr13");
+
+        String sqlString = "select employee_id, first_name, round(salary/13,2) salary, hire_date+1/2 hire_date from employees where employee_id=:v_id";
+        Map<String, Object> argMap = new HashMap<>();
+        argMap.put("v_id", "100");
+        NamedParameterJdbcTemplate nJTemp = new NamedParameterJdbcTemplate(dtSource);
+
+        List<Map<String, Object>> rows = nJTemp.queryForList(sqlString, argMap);
+        System.out.println(rows.size());
+        Employee empRes=null;
+        try {
+            empRes = nJTemp.queryForObject(sqlString, argMap, new BeanPropertyRowMapper<Employee>(Employee.class));
+            System.out.println(empRes.getEmployee_id());
+            System.out.println(empRes.getFirst_name());
+            System.out.println(empRes.getSalary());
+            System.out.println(empRes.getHire_date());
+        }
+        catch (EmptyResultDataAccessException e){
+            empRes = null;
+        }
+
+        Employee empCustom = null;
+        System.out.println("Employee Custom");
+        try {
+            empCustom = (Employee) nJTemp.queryForObject(sqlString, argMap, new EmployeeRowMapper());
+            System.out.println(empCustom.getEmployee_id());
+            System.out.println(empCustom.getFirst_name());
+            System.out.println(empCustom.getSalary());
+            System.out.println(empCustom.getHire_date());
+        }
+        catch (EmptyResultDataAccessException e){
+            empCustom = null;
+        }
+
+
+
+
+        //http://www.dineshonjava.com/2012/12/using-namedparameterjdbctemplate-in.html#.VlxHfb-IKNg
+        //http://www.mkyong.com/spring/spring-jdbctemplate-querying-examples/
+    }
+}

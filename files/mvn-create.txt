@@ -1,0 +1,1 @@
+mvn archetype:generate -DarchetypeArtifactId=maven-archetype-quickstart -DgroupId=com.peterservice -DartifactId=JavaTrainingSpring -Dversion=1.0-SNAPSHOT -DinteractiveMode=false 

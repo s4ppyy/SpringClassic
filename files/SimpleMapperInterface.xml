@@ -1,0 +1,20 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.SimpleMapperInterface">
+
+    <resultMap id="employee" type="mybatis.Employee">
+        <id property="intId" column="employee_id" javaType="int" jdbcType="BIGINT" />
+        <result property="strName" column="first_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+        <result property="bdSalary" column="salary" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+        <result property="hireDate" column="hire_date" jdbcType="DATE" javaType="java.util.Date" />
+    </resultMap>
+
+
+    <select id="getEmployeeById" parameterType="java.lang.Integer" resultMap="employee" >
+        select employee_id, first_name, salary, hire_date + 2/3 hire_date from employees where employee_id = #{id}
+    </select>
+
+    <select id="getEmployees" resultMap="employee">
+        select * from employees
+    </select>
+</mapper>

@@ -1,0 +1,30 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+    <context:annotation-config></context:annotation-config>
+
+    <bean id="bisJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- the DataSource (parameterized for configuration via a PropertyPlaceHolderConfigurer) -->
+    <bean id="dataSource" destroy-method="close" class="oracle.jdbc.pool.OracleDataSource">
+        <!--<property name="driverClassName" value="oracle.jdbc.Driver"/>
+        <property name="URL" value="jdbc:oracle:thin:@SRV2-DRCS-TRC05.net.billing.ru:1521:orcl11s"/> -->
+        <property name="ServerName" value="SRV2-DRCS-TRC05.net.billing.ru"/>
+        <property name="ServiceName" value="orcl11s.net.billing.ru"/>
+        <property name="PortNumber" value="1521"/>
+        <property name="DriverType" value="thin"/>
+        <property name="User" value="HR13"/>
+        <property name="Password" value="hr13"/>
+    </bean>
+
+</beans>

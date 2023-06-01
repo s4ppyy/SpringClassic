@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.peterservice</groupId>
+  <artifactId>Spring4RestFullApiToJson</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Spring4RestFullApiToJson</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <java-version>1.8</java-version>
+    <jdk.version>1.8</jdk.version>
+    <spring.version>4.3.3.RELEASE</spring.version>
+    <jstl.version>1.2</jstl.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <jackson.version>2.7.5</jackson.version>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>${spring.version}</version>
+  </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+  <!-- Jackson JSON Processor -->
+  <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>${jackson.version}</version>
+  </dependency>
+</dependencies>
+<build>
+<plugins>
+  <plugin>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-maven-plugin</artifactId>
+    <version>9.3.14.v20161028</version>
+    <configuration>
+      <httpConnector>
+        <!--host>localhost</host-->
+        <!--http://localhost:8087/springRJSON/employees-->
+        <port>8087</port>
+      </httpConnector>
+      <scanIntervalSeconds>10</scanIntervalSeconds>
+      <webApp>
+        <contextPath>/springRJSON</contextPath>
+      </webApp>
+      <stopPort>9999</stopPort>
+      <stopKey>foo</stopKey>
+    </configuration>
+  </plugin>
+</plugins>
+</build>
+</project>

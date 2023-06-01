@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <bean id="duke" class="ru.itmo.razrab.trash.Juggler" />
+    <bean id="duke15" class="ru.itmo.razrab.trash.Juggler">
+        <constructor-arg value="15" />
+    </bean>
+
+    <bean id="sonnet29" class="ru.itmo.razrab.trash.Sonnet29" />
+    <bean id="poeticDuke" class="ru.itmo.razrab.trash.PoeticJuggler" scope="prototype">
+        <constructor-arg value="15" />
+        <constructor-arg ref="sonnet29" />
+    </bean>
+
+    <bean id="newJuggler" class="ru.itmo.razrab.trash.Juggler" scope="prototype" />
+
+    <bean id="saxophone" class="ru.itmo.razrab.trash.Saxophone" />
+
+    <bean id="kenny" class="ru.itmo.razrab.trash.Instrumentallist">
+        <property name="song" value="Jingle Bells" />
+        <property name="instrument" ref="saxophone" />
+    </bean>
+
+    <bean id="wally" class="ru.itmo.razrab.trash.Instrumentallist" scope="prototype">
+        <property name="song" value="Can't touch this" />
+        <property name="instrument">
+            <bean class="ru.itmo.razrab.trash.Saxophone" />
+        </property>
+    </bean>
+
+    <bean id="hank" class="ru.itmo.razrab.trash.OneManBand">
+        <property name="instruments">
+            <list>
+                <bean class="ru.itmo.razrab.trash.Guitar" />
+                <bean class="ru.itmo.razrab.trash.Saxophone" />
+            </list>
+        </property>
+    </bean>
+
+</beans>

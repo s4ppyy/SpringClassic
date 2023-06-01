@@ -1,0 +1,48 @@
+package com.peterservice.training.clients.controller;
+
+
+import com.peterservice.training.clients.dao.ClientDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class ClientController {
+    private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
+
+    @Autowired
+    @Qualifier("clientMyBatisDao")
+    ClientDao dao;
+
+    /* localhost:8080/app/home */
+    @RequestMapping("/home")
+
+    public String showHomePage() {
+        logger.debug(" ~~~ in ClientController showHomePage ~~~ ");
+
+        return "test";
+
+    }
+
+
+    /* localhost:8080/app/clients */
+    @RequestMapping({"/clients", "/customers"})
+    public ModelAndView showClientsPage() {
+        ModelAndView model = new ModelAndView("clients");
+        model.addObject("msg", "~with spring mvc~");
+        model.addObject(
+                "clients",
+                dao.getAllClients()
+
+        );
+
+        return model;
+    }
+
+}
+
+

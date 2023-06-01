@@ -1,0 +1,46 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Employee">
+
+    <resultMap id="employee" type="mybatis.Employee">
+        <id property="intId" column="employee_id" javaType="int" jdbcType="BIGINT" />
+        <result property="strName" column="first_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+        <result property="bdSalary" column="salary" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+        <result property="hireDate" column="hire_date" jdbcType="DATE" javaType="java.util.Date" />
+    </resultMap>
+
+
+    <select id="getEmployeeById"  resultMap="employee" >
+        select employee_id, first_name, salary, hire_date + 2/3 hire_date from employees where first_name=#{fname} and hire_date+2/3=#{hdate}
+    </select>
+
+    <select id="getEmployees" resultMap="employee">
+        select * from employees
+    </select>
+
+    <update id="dropT">
+        drop table tbl_work
+    </update>
+
+    <update id="createT">
+        create table tbl_work(f1 varchar2(10), f2 date)
+    </update>
+
+    <insert id="insertT">
+        insert into tbl_work(f1, f2) values(#{fname},#{hdate})
+    </insert>
+
+    <select id="getEmpProc" statementType="CALLABLE" parameterType="java.util.Map">
+        {call prc_emp(#{p_in, jdbcType=BIGINT, javaType=java.lang.Integer, mode=IN},
+         #{p_out, jdbcType=CURSOR, javaType=java.sql.ResultSet, mode=OUT, resultMap=employee})}
+    </select>
+
+    <!--create or replace procedure prc_emp(p_in number, p_out out sys_refcursor) is-->
+    <!--begin-->
+    <!--open p_out for-->
+    <!--select employee_id, first_name, salary, hire_date + 2/3 hire_date-->
+    <!--from employees-->
+    <!--where employee_id=p_in;-->
+    <!--end;-->
+
+</mapper>
